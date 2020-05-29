@@ -9,9 +9,6 @@ def main():
         nques=(int)(nques1[0])
         nattempts1=(next(csvreader))
         nattempts=(int)(nattempts1[0])
-        if(len(nques1) >1 or len(nattempts1) >1):
-            print("Don't Enter mutiple values for Number of questions or number of attempts " )
-            return
         i=0
         j=0
         #reads every line of the csv file starting from second line
@@ -149,8 +146,11 @@ def part1code(time_in_minutes,times_compiled,feedback,n):
             c+=25
         elif(z=="medium"):
             c+=50
-        else:
+        elif(z=="hard"):
             c+=75
+        else:
+            print("Invalid option")
+            return 0
         total+=(a+b+c)/3
     total=total/n
     return total
@@ -180,8 +180,11 @@ def part1mcq(time,attempts,feedback,n):
             c+=25
         elif(z=="medium"):
             c+=50
-        else:
+        elif(z=="hard"):
             c+=75
+        else:
+            print("Invalid option")
+            return
         total+=(a+b+c)/3
     total=total/n
     return total
