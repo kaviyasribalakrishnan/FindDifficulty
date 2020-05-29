@@ -2,18 +2,19 @@ import csv
 def main():
     filename="StudentsPerformance.csv"
     rows=[]
+   #reads the file data
     with open(filename, 'r') as csvfile: 
         csvreader = csv.reader(csvfile)
-        nques1=(next(csvreader))
-        
+        nques1=(next(csvreader)) 
         nques=(int)(nques1[0])
-        w=(next(csvreader))
-        nattempts=(int)(w[0])
-        if(len(nques1) >1 or len(w) >1):
+        nattempts1=(next(csvreader))
+        nattempts=(int)(nattempts1[0])
+        if(len(nques1) >1 or len(nattempts1) >1):
             print("Don't Enter mutiple values for Number of questions or number of attempts " )
             return
         i=0
         j=0
+        #reads every line of the csv file starting from second line
         for row in csvreader:
            if(i<nques):
                if(j<nattempts):
@@ -21,41 +22,40 @@ def main():
                    difficulty=row[1]
                    #print(row[2])
                    n=(int)(row[2])
+                   #if length of a row is less than 10 then data is insufficient or greater than 10 then data is extra
                    if(len(row)<10 or len(row)>10):
                         print("Enter sufficient data and Try Again")
                         return
                    else:
-                        #print(choice)
+                        #checking for choice of question 
                         if((choice== "mcq") or (choice== "fillup") or (choice == "match")):
                             total=mcq(n,row)
-                            #print(total)
+                            #adding the value into the list rows
                             rows.append(total)
                             
                         elif(choice == "coding"):
                             total=code(n,row)
+                            #adding the value into the list rows
                             rows.append(total)
-                            #print(total)
-                           
-                            
+
                         else:
+                            #if the entered choice option is not correct
                             print("Enter valid details and try again")
                             return
                j=j+1
 
            if(j==nattempts):
                 i+=1
+                #to make the next iteration
                 j=0
+                #To print the result of that particular question
                 printDiff(rows,nattempts)
                 rows.clear()
-           
-                   
-               
-            
 
-
+#Function to print the final result                
 def printDiff(rows,n):
     total=0.0
-    #print(rows)
+    #Taking average of the values
     for x in rows:
         total+=x
     
@@ -68,6 +68,7 @@ def printDiff(rows,n):
     else:
         print("Hard Question")
 
+#Function to calculate result for coding type of question       
 def code(n,row):
         diff=row[1].lower()
         t=row[3]
@@ -94,7 +95,7 @@ def code(n,row):
         part4=part2(ncorrect,nwrong,npartial,n)
         return(part3+(part4+grade_points))
 
-    
+#Function to calculate result for mcq / fillups / match type of question  
 def mcq(n,row):
         diff=row[1].lower()
         t=row[3]
@@ -121,6 +122,8 @@ def mcq(n,row):
         part4=part2(ncorrect,nwrong,npartial,n)
         return(part3+part4+grade_points)
 
+    
+#First part of the solution calculated using time_in_minutes,times_compiled,feedback,n for coding question
 def part1code(time_in_minutes,times_compiled,feedback,n):
     a=0
     b=0
@@ -151,6 +154,7 @@ def part1code(time_in_minutes,times_compiled,feedback,n):
         total+=(a+b+c)/3
     total=total/n
     return total
+#First part of the solution calculated using time,attempts,feedback,n for mcq type question
 def part1mcq(time,attempts,feedback,n):
     a=0
     b=0
@@ -181,9 +185,10 @@ def part1mcq(time,attempts,feedback,n):
         total+=(a+b+c)/3
     total=total/n
     return total
-        
+      
+#Part 2 solution is common bor both type     
 def part2(ncorrect,nwrong,npartial,n):
-    ans=(float)((ncorrect+npartial)/n)
+    ans=(float)((ncorrect+npartial)/n) #difficulty index value
     if( abs(ans-0) >=0.75):
         return 25
     elif(abs(ans-0) <0.25):
